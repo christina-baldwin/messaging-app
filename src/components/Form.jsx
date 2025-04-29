@@ -3,13 +3,16 @@ import styled from "styled-components";
 
 const StyledForm = styled.form`
   width: 300px;
+  height: 120px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1rem;
   border: solid black 1px;
   background-color: #f5f5f5;
   padding: 1rem;
   box-shadow: 4px 4px 0px #000;
+  margin-bottom: 3rem;
 `;
 
 const MainHeading = styled.h1`
@@ -33,7 +36,7 @@ const SubmitBtn = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 15px;
-  background-color: rgb(250, 192, 192);
+  background-color: #ffb6c1;
 `;
 
 const Form = ({ onSend }) => {
