@@ -4,7 +4,7 @@ const Message = (props) => {
   const [count, setCount] = useState(0);
 
   const handleCount = () => {
-    setCount(count + 1);
+    setCount((count) => count + 1);
     console.log(count);
   };
 
