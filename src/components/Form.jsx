@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const StyledForm = styled.form`
-  width: 300px;
+  width: 350px;
   height: 120px;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@ const StyledForm = styled.form`
 `;
 
 const MainHeading = styled.h1`
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 500;
 `;
 
@@ -24,6 +24,8 @@ const StyledInput = styled.input`
   font-family: "IBM Plex Mono", monospace;
   height: 50px;
   padding: 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 400;
 `;
 
 const SubmitBtn = styled.button`
@@ -37,6 +39,8 @@ const SubmitBtn = styled.button`
   cursor: pointer;
   border-radius: 15px;
   background-color: #ffb6c1;
+  font-wight: 700;
+  font-size: 1rem;
 `;
 
 const Form = ({ onSend }) => {

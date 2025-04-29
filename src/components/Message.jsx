@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const StyledMessage = styled.div`
-  width: 300px;
+  width: 350px;
   height: 120px;
   display: flex;
   flex-direction: column;
@@ -16,15 +16,20 @@ const StyledMessage = styled.div`
 
 const MessageText = styled.p`
   font-family: "IBM Plex Mono", monospace;
+  font-size: 1rem;
+  font-weight: 400;
 `;
 
 const MessageFooter = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const LikeContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
 `;
 
@@ -43,6 +48,7 @@ const LikeBtn = styled.button`
 const FooterText = styled.p`
   font-family: "Inter", sans-serif;
   color: #999;
+  font-size: 0.8rem;
 `;
 
 const Message = (props) => {
