@@ -7,7 +7,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   gap: 1rem;
   border: solid black 1px;
-  background-color: #e8e8e8;
+  background-color: #f5f5f5;
   padding: 1rem;
   box-shadow: 4px 4px 0px #000;
 `;
@@ -33,7 +33,7 @@ const SubmitBtn = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 15px;
-  background-color: #faa0a0;
+  background-color: rgb(250, 192, 192);
 `;
 
 const Form = ({ onSend }) => {

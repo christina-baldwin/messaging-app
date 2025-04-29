@@ -6,11 +6,16 @@ const GlobalStyles = createGlobalStyle`
 }
 
 html {
-font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
+  color: #333;
 }
 
 body {
   padding: 2rem;
+}
+
+ion-icon {
+  color: red;
 }
 
 `;
