@@ -22,7 +22,7 @@ const MainHeading = styled.h1`
 
 const StyledInput = styled.input`
   font-family: "IBM Plex Mono", monospace;
-  height: 50px;
+  height: 100px;
   padding: 0 0.5rem;
   font-size: 0.9rem;
   font-weight: 400;
@@ -40,7 +40,7 @@ const SubmitBtn = styled.button`
   border-radius: 15px;
   background-color: #ffb6c1;
   font-wight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
 `;
 
 const Form = ({ onSend }) => {

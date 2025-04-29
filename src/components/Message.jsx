@@ -16,7 +16,7 @@ const StyledMessage = styled.div`
 
 const MessageText = styled.p`
   font-family: "IBM Plex Mono", monospace;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
 `;
 
@@ -43,6 +43,7 @@ const LikeBtn = styled.button`
   padding: 0.4rem;
   background-color: ${(props) =>
     props.status === "liked" ? "#FFB6C1" : "#E0E0E0"};
+  font-size: 1rem;
 `;
 
 const FooterText = styled.p`
