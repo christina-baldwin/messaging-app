@@ -18,6 +18,7 @@ const MainHeading = styled.h1`
 `;
 
 const StyledInput = styled.input`
+  font-family: "IBM Plex Mono", monospace;
   height: 50px;
   padding: 0 0.5rem;
 `;

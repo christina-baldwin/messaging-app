@@ -5,6 +5,10 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
 }
 
+html {
+font-family: "Inter", sans-serif;
+}
+
 body {
   padding: 2rem;
 }
