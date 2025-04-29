@@ -5,7 +5,7 @@ const Form = () => {
 
   return (
     <form>
-      <h1>What is making me happy right now?</h1>
+      <h2>What is making me happy right now?</h2>
       <input
         type="text"
         onChange={(e) => setMessage(e.target.value)}
