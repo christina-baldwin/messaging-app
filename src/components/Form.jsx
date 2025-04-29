@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 
-const Form = () => {
+const Form = ({ onSend }) => {
   const [message, setMessage] = useState("");
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSend(message);
+    setMessage("");
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>What is making me happy right now?</h2>
       <input
         type="text"
