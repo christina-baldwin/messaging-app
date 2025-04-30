@@ -59,6 +59,11 @@ const Message = (props) => {
     setCount((count) => count + 1);
   };
 
+  const calculateTime = () => {
+    const seconds = Math.floor((Date.now() - props.time) / 1000);
+    return `${seconds} seconds ago`;
+  };
+
   return (
     <StyledMessage>
       <MessageText>{props.message}</MessageText>
@@ -72,7 +77,7 @@ const Message = (props) => {
           </LikeBtn>
           <FooterText>x {count}</FooterText>
         </LikeContainer>
-        <FooterText>{props.time} ago</FooterText>
+        <FooterText>{calculateTime()}</FooterText>
       </MessageFooter>
     </StyledMessage>
   );

@@ -48,7 +48,11 @@ const Form = ({ onSend }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSend(message);
+    const newMessage = {
+      message: message,
+      time: Date.now(),
+    };
+    onSend(newMessage);
     setMessage("");
   };
 

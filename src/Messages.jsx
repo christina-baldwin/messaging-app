@@ -11,7 +11,9 @@ const Messages = (props) => {
   return (
     <MessagesContainer>
       {props.messages.map((message, index) => {
-        return <Message key={index} message={message} />;
+        return (
+          <Message key={index} message={message.message} time={message.time} />
+        );
       })}
     </MessagesContainer>
   );
