@@ -43,7 +43,7 @@ const SubmitBtn = styled.button`
   font-size: 0.9rem;
 `;
 
-const Form = ({ onSend }) => {
+const Form = (props) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
@@ -52,7 +52,7 @@ const Form = ({ onSend }) => {
       message: message,
       time: Date.now(),
     };
-    onSend(newMessage);
+    props.onSend(newMessage);
     setMessage("");
   };
 
