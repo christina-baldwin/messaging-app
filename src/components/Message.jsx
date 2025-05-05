@@ -19,7 +19,7 @@ const Message = ({ message, time }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={handleLike}
-            className={`flex items-center justify-center rounded-full border-none p-2 text-lg ${
+            className={`flex items-center justify-center rounded-full border-none p-2 text-lg cursor-pointer ${
               count > 0 ? "bg-pink-300" : "bg-gray-300"
             }`}
           >
