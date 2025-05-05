@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import GlobalStyles from "./GlobalStyles";
 import Form from "./components/Form";
 import Messages from "./Messages";
 
@@ -12,7 +11,6 @@ export const App = () => {
 
   return (
     <>
-      <GlobalStyles />
       <Form onSend={addMessage} />
       <Messages messages={messages} />
     </>
