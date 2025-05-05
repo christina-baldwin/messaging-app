@@ -1,47 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-
-const StyledForm = styled.form`
-  width: 350px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
-  border: solid black 1px;
-  background-color: #f5f5f5;
-  padding: 1rem;
-  box-shadow: 4px 4px 0px #000;
-  margin-bottom: 3rem;
-`;
-
-const MainHeading = styled.h1`
-  font-size: 1rem;
-  font-weight: 500;
-`;
-
-const StyledInput = styled.input`
-  font-family: "IBM Plex Mono", monospace;
-  height: 100px;
-  padding: 0 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 400;
-`;
-
-const SubmitBtn = styled.button`
-  align-self: flex-start;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.5rem 0.7rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 15px;
-  background-color: #ffb6c1;
-  font-wight: 700;
-  font-size: 0.9rem;
-`;
 
 const Form = (props) => {
   const [message, setMessage] = useState("");
@@ -57,18 +14,28 @@ const Form = (props) => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
-      <MainHeading>What is making you happy right now?</MainHeading>
-      <StyledInput
+    <form
+      onSubmit={handleSubmit}
+      className="w-[350px] h-[150px] flex flex-col justify-between gap-4 border border-black bg-[#f5f5f5] p-4 shadow-[4px_4px_0px_#000] mb-12"
+    >
+      <h1 className="text-base font-medium">
+        What is making you happy right now?
+      </h1>
+      <input
         type="text"
         onChange={(e) => setMessage(e.target.value)}
         value={message}
+        className="font-mono h-[100px] px-2 text-sm font-normal border border-gray-400 rounded bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
       />
-      <SubmitBtn type="submit">
-        <ion-icon name="heart"></ion-icon>Send Happy Thought
+      <button
+        type="submit"
+        className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer"
+      >
         <ion-icon name="heart"></ion-icon>
-      </SubmitBtn>
-    </StyledForm>
+        Send Happy Thought
+        <ion-icon name="heart"></ion-icon>
+      </button>
+    </form>
   );
 };
 
