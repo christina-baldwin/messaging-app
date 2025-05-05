@@ -6,6 +6,7 @@ const Form = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMessage = {
+      id: Date.now(),
       message: message,
       time: Date.now(),
     };

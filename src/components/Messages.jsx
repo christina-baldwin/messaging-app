@@ -13,10 +13,10 @@ const Messages = (props) => {
       {props.messages
         .slice(0)
         .reverse()
-        .map((message, index) => {
+        .map((message) => {
           return (
             <Message
-              key={index}
+              key={message.id}
               message={message.message}
               time={message.time}
             />
