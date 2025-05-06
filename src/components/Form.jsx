@@ -1,17 +1,36 @@
 import React, { useState } from "react";
 
-const Form = (props) => {
+const Form = ({ setMessages }) => {
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newMessage = {
-      id: Date.now(),
-      message: message,
-      time: Date.now(),
-    };
-    props.onSend(newMessage);
-    setMessage("");
+    const newMessage = { message };
+    try {
+      const response = await fetch(
+        "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newMessage),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to post message");
+      }
+
+      const data = await response.json();
+      console.log("Message posted:", data);
+
+      setMessages((prev) => [data, ...prev]);
+
+      setMessage("");
+    } catch (error) {
+      console.error("Error posting message:", error);
+    }
   };
 
   return (

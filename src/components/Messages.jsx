@@ -3,16 +3,14 @@ import Message from "./Message";
 const Messages = (props) => {
   return (
     <div className="flex flex-col gap-12">
-      {props.messages
-        .slice(0)
-        .reverse()
-        .map((message) => (
-          <Message
-            key={message.id}
-            message={message.message}
-            time={message.time}
-          />
-        ))}
+      {props.messages.map((message) => (
+        <Message
+          key={message._id}
+          message={message.message}
+          time={message.createdAt}
+          likes={message.hearts}
+        />
+      ))}
     </div>
   );
 };

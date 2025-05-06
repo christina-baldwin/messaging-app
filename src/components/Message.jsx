@@ -8,7 +8,7 @@ const Message = ({ message, time }) => {
   };
 
   const calculateTime = () => {
-    const seconds = Math.floor((Date.now() - time) / 1000);
+    const seconds = Math.floor((Date.now() - new Date(time)) / 1000);
     return `${seconds} seconds ago`;
   };
 
