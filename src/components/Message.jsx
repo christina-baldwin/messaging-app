@@ -1,10 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Message = ({ message, time }) => {
-  const [count, setCount] = useState(0);
+const Message = ({ id, message, time, likes }) => {
+  const thoughtIdUrl = `https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${id}/like`;
 
-  const handleLike = () => {
-    setCount((count) => count + 1);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes);
+
+  // reads from local storage and loads message with like functionality if it has been liked
+  // without this i won't see my likes
+  useEffect(() => {
+    const likedMessages =
+      JSON.parse(localStorage.getItem("likedMessages")) || [];
+    if (likedMessages.includes(id)) {
+      setLiked(true);
+    }
+  }, [id]);
+
+  const handleLike = async () => {
+    if (liked) return;
+
+    try {
+      const response = await fetch(thoughtIdUrl, { method: "POST" });
+      if (!response.ok) throw new Error("Failed to like");
+
+      const likedMessages =
+        JSON.parse(localStorage.getItem("likedMessages")) || [];
+      likedMessages.push(id);
+      localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
+
+      setLiked(true);
+      setLikeCount((count) => count + 1);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const calculateTime = () => {
@@ -20,12 +48,12 @@ const Message = ({ message, time }) => {
           <button
             onClick={handleLike}
             className={`flex items-center justify-center rounded-full border-none p-2 text-lg cursor-pointer ${
-              count > 0 ? "bg-pink-300" : "bg-gray-300"
+              liked ? "bg-pink-300" : "bg-gray-300"
             }`}
           >
             <ion-icon name="heart"></ion-icon>
           </button>
-          <p className="text-sm text-gray-500 font-sans">x {count}</p>
+          <p className="text-sm text-gray-500 font-sans">x {likeCount}</p>
         </div>
         <p className="text-sm text-gray-500 font-sans">{calculateTime()}</p>
       </div>

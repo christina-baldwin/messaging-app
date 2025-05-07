@@ -5,7 +5,7 @@ const Messages = (props) => {
     <div className="flex flex-col gap-12">
       {props.messages.map((message) => (
         <Message
-          key={message._id}
+          id={message._id}
           message={message.message}
           time={message.createdAt}
           likes={message.hearts}
