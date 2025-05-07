@@ -17,19 +17,37 @@ const Message = ({ id, message, time, likes }) => {
   }, [id]);
 
   const handleLike = async () => {
-    if (liked) return;
-
     try {
-      const response = await fetch(thoughtIdUrl, { method: "POST" });
-      if (!response.ok) throw new Error("Failed to like");
+      let response;
+      if (liked) {
+        response = await fetch(thoughtIdUrl, { method: "DELETE" });
+        if (!response.ok) throw new Error("Failed to unlike");
 
-      const likedMessages =
-        JSON.parse(localStorage.getItem("likedMessages")) || [];
-      likedMessages.push(id);
-      localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
+        const likedMessages =
+          JSON.parse(localStorage.getItem("likedMessages")) || [];
+        const updatedLikedMessages = likedMessages.filter(
+          (currentId) => currentId !== id
+        );
+        localStorage.setItem(
+          "likedMessages",
+          JSON.stringify(updatedLikedMessages)
+        );
 
-      setLiked(true);
-      setLikeCount((count) => count + 1);
+        setLiked(false);
+        setLikeCount((count) => count - 1);
+      } else {
+        response = await fetch(thoughtIdUrl, { method: "POST" });
+
+        if (!response.ok) throw new Error("Failed to like");
+
+        const likedMessages =
+          JSON.parse(localStorage.getItem("likedMessages")) || [];
+        likedMessages.push(id);
+        localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
+
+        setLiked(true);
+        setLikeCount((count) => count + 1);
+      }
     } catch (error) {
       console.error(error);
     }
