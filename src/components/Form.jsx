@@ -8,7 +8,7 @@ const Form = ({ setMessages }) => {
     e.preventDefault();
     const newMessage = { message };
 
-    if (message.trim() === "") {
+    if (message.length === 0) {
       setErrorMessage("Can't submit an empty message!");
       return;
     }
