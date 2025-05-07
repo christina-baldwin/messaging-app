@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Form from "./components/Form";
 import Messages from "./components/Messages";
+import LikedMessages from "./components/LikedMessages";
 
 export const App = () => {
   const [messages, setMessages] = useState([]);
@@ -30,6 +31,7 @@ export const App = () => {
   return (
     <>
       <Form setMessages={setMessages} />
+      <LikedMessages />
       <Messages messages={messages} />
     </>
   );
