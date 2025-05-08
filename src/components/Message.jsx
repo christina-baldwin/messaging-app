@@ -57,19 +57,19 @@ const Message = ({ id, message, time, likes }) => {
     let timeDiff = Math.floor((Date.now() - new Date(time)) / 1000);
 
     if (timeDiff < 60) {
-      return `${timeDiff} second${timeDiff > 1 ? "s" : ""} ago`;
+      return `${timeDiff} second${timeDiff === 1 ? "" : "s"} ago`;
     }
     if (timeDiff >= 60 && timeDiff < 3600) {
       timeDiff = Math.floor(timeDiff / 60);
-      return `${timeDiff} minute${timeDiff > 1 ? "s" : ""} ago`;
+      return `${timeDiff} minute${timeDiff === 1 ? "" : "s"} ago`;
     }
     if (timeDiff >= 3600 && timeDiff < 86400) {
       timeDiff = Math.floor(timeDiff / 3600);
-      return `${timeDiff} hour${timeDiff > 1 ? "s" : ""} ago`;
+      return `${timeDiff} hour${timeDiff === 1 ? "" : "s"} ago`;
     }
     if (timeDiff >= 86400 && timeDiff < 2592000) {
       timeDiff = Math.floor(timeDiff / 86400);
-      return `${timeDiff} day${timeDiff > 1 ? "s" : ""} ago`;
+      return `${timeDiff} day${timeDiff === 1 ? "" : "s"} ago`;
     }
     return "a long time ago";
   };
