@@ -1,5 +1,5 @@
 import Message from "./Message";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const Messages = (props) => {
   return (
