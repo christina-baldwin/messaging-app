@@ -59,7 +59,7 @@ const Form = ({ setMessages }) => {
         type="text"
         onChange={(e) => setMessage(e.target.value)}
         value={message}
-        className="font-mono h-[100px] px-2 text-sm font-normal border border-gray-400 rounded bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+        className="font-mono h-[70px] px-2 text-sm font-normal border border-gray-400 rounded bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
       />
       <p
         className={`text-sm mt-2 ${

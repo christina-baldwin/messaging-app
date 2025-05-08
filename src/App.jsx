@@ -29,10 +29,12 @@ export const App = () => {
   }, []);
 
   return (
-    <>
-      <Form setMessages={setMessages} />
-      <LikedMessages />
-      <Messages messages={messages} />
-    </>
+    <div className="flex items-center justify-center">
+      <div className="max-w-[500px] w-full">
+        <Form setMessages={setMessages} />
+        <LikedMessages />
+        <Messages messages={messages} />
+      </div>
+    </div>
   );
 };
