@@ -53,9 +53,25 @@ const Message = ({ id, message, time, likes }) => {
     }
   };
 
-  const calculateTime = () => {
-    const seconds = Math.floor((Date.now() - new Date(time)) / 1000);
-    return `${seconds} seconds ago`;
+  const calculateTime = (time) => {
+    let timeDiff = Math.floor((Date.now() - new Date(time)) / 1000);
+
+    if (timeDiff < 60) {
+      return `${timeDiff} second${timeDiff > 1 ? "s" : ""} ago`;
+    }
+    if (timeDiff >= 60 && timeDiff < 3600) {
+      timeDiff = Math.floor(timeDiff / 60);
+      return `${timeDiff} minute${timeDiff > 1 ? "s" : ""} ago`;
+    }
+    if (timeDiff >= 3600 && timeDiff < 86400) {
+      timeDiff = Math.floor(timeDiff / 3600);
+      return `${timeDiff} hour${timeDiff > 1 ? "s" : ""} ago`;
+    }
+    if (timeDiff >= 86400 && timeDiff < 2592000) {
+      timeDiff = Math.floor(timeDiff / 86400);
+      return `${timeDiff} day${timeDiff > 1 ? "s" : ""} ago`;
+    }
+    return "a long time ago";
   };
 
   return (
@@ -73,7 +89,7 @@ const Message = ({ id, message, time, likes }) => {
           </button>
           <p className="text-sm text-gray-500 font-sans">x {likeCount}</p>
         </div>
-        <p className="text-sm text-gray-500 font-sans">{calculateTime()}</p>
+        <p className="text-sm text-gray-500 font-sans">{calculateTime(time)}</p>
       </div>
     </div>
   );
