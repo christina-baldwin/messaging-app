@@ -32,7 +32,7 @@ export const App = () => {
     <div className="flex items-center justify-center">
       <div className="max-w-[500px] w-full">
         <Form setMessages={setMessages} />
-        <LikedMessages />
+        <LikedMessages messages={messages} />
         <Messages messages={messages} />
       </div>
     </div>
