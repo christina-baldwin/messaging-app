@@ -31,6 +31,9 @@ export const App = () => {
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-[500px] w-full">
+        <h1 className="text-center font-sans mb-8 text-4xl text-pink-500">
+          Happy Thoughts!
+        </h1>
         <Form setMessages={setMessages} />
         <LikedMessages messages={messages} />
         <Messages messages={messages} />
