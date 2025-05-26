@@ -35,8 +35,8 @@ export const App = () => {
           Happy Thoughts!
         </h1>
         <Form setMessages={setMessages} />
-        <LikedMessages messages={messages} />
         <Messages messages={messages} />
+        <LikedMessages messages={messages} />
       </div>
     </div>
   );
