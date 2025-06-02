@@ -28,7 +28,8 @@ const LikedMessages = (props) => {
         </h2>
         <div className="mb-4 text-right">
           <h3 className="text-base text-gray-500 font-sans">
-            You have liked {likedMessages.length} messages
+            You have liked {likedMessages.length} message
+            {likedMessages.length === 1 ? "" : "s"}
           </h3>
         </div>
         <div className="flex flex-col gap-12">

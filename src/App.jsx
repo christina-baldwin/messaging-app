@@ -10,7 +10,7 @@ export const App = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts"
+          "https://happy-thoughts-api-4ful.onrender.com/thoughts"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch messages");

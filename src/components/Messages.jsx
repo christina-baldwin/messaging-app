@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Messages = (props) => {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 mb-12">
       <h2 className="font-sans mb-6 text-2xl text-pink-500">Latest Messages</h2>
       {props.messages.map((message) => (
         <motion.div

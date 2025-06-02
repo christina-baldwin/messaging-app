@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const Message = ({ id, message, time, likes }) => {
-  const thoughtIdUrl = `https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${id}/like`;
+  const thoughtIdUrl = `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
