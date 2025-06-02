@@ -76,7 +76,7 @@ const Message = ({ id, message, time, likes }) => {
 
   return (
     <div className=" flex flex-col justify-between gap-4 border border-black bg-white p-4 shadow-[4px_4px_0px_black]">
-      <p className="font-mono text-lg font-normal">{message}</p>
+      <p className="font-mono text-lg font-normal break-words">{message}</p>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <button
