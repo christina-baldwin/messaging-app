@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const Message = ({ id, message, time, likes }) => {
+const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
   const thoughtIdUrl = `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
 
-  // reads from local storage and loads message with like functionality if it has been liked
-  // without this i won't see my likes
   useEffect(() => {
     const likedMessages =
       JSON.parse(localStorage.getItem("likedMessages")) || [];
@@ -37,7 +35,6 @@ const Message = ({ id, message, time, likes }) => {
         setLikeCount((count) => count - 1);
       } else {
         response = await fetch(thoughtIdUrl, { method: "POST" });
-
         if (!response.ok) throw new Error("Failed to like");
 
         const likedMessages =
@@ -53,21 +50,55 @@ const Message = ({ id, message, time, likes }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`https://your-backend-url/thoughts/${id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (data.success) {
+        onDelete(id);
+      } else {
+        alert("Delete failed: " + data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUpdate = async (newMessage) => {
+    try {
+      const response = await fetch(`https://your-backend-url/thoughts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newMessage }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        onUpdate(id, newMessage);
+      } else {
+        alert("Update failed: " + data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const calculateTime = (time) => {
     let timeDiff = Math.floor((Date.now() - new Date(time)) / 1000);
 
     if (timeDiff < 60) {
       return `${timeDiff} second${timeDiff === 1 ? "" : "s"} ago`;
     }
-    if (timeDiff >= 60 && timeDiff < 3600) {
+    if (timeDiff < 3600) {
       timeDiff = Math.floor(timeDiff / 60);
       return `${timeDiff} minute${timeDiff === 1 ? "" : "s"} ago`;
     }
-    if (timeDiff >= 3600 && timeDiff < 86400) {
+    if (timeDiff < 86400) {
       timeDiff = Math.floor(timeDiff / 3600);
       return `${timeDiff} hour${timeDiff === 1 ? "" : "s"} ago`;
     }
-    if (timeDiff >= 86400 && timeDiff < 2592000) {
+    if (timeDiff < 2592000) {
       timeDiff = Math.floor(timeDiff / 86400);
       return `${timeDiff} day${timeDiff === 1 ? "" : "s"} ago`;
     }
@@ -75,7 +106,7 @@ const Message = ({ id, message, time, likes }) => {
   };
 
   return (
-    <div className=" flex flex-col justify-between gap-4 border border-black bg-white p-4 shadow-[4px_4px_0px_black]">
+    <div className="flex flex-col justify-between gap-4 border border-black bg-white p-4 shadow-[4px_4px_0px_black]">
       <p className="font-mono text-lg font-normal break-words">{message}</p>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -90,6 +121,26 @@ const Message = ({ id, message, time, likes }) => {
           <p className="text-sm text-gray-500 font-sans">x {likeCount}</p>
         </div>
         <p className="text-sm text-gray-500 font-sans">{calculateTime(time)}</p>
+      </div>
+      {/* Example delete & update buttons for testing (you can style/remove later) */}
+      <div className="flex gap-4 mt-2">
+        <button
+          onClick={handleDelete}
+          className="text-xs text-red-500 underline"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => {
+            const newMessage = prompt("Enter new message:", message);
+            if (newMessage && newMessage.trim() !== "") {
+              handleUpdate(newMessage);
+            }
+          }}
+          className="text-xs text-blue-500 underline"
+        >
+          Edit
+        </button>
       </div>
     </div>
   );
