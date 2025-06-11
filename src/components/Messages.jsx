@@ -1,6 +1,7 @@
-import Message from "./Message";
 import { motion } from "framer-motion";
 import { useState } from "react";
+
+import Message from "./Message";
 
 const Messages = ({ messages: initialMessages }) => {
   const [messages, setMessages] = useState(initialMessages);

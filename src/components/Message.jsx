@@ -50,39 +50,57 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
     }
   };
 
+  // ** Minimal delete handler **
   const handleDelete = async () => {
     try {
-      const response = await fetch(`https://your-backend-url/thoughts/${id}`, {
-        method: "DELETE",
-      });
-      const data = await response.json();
-      if (data.success) {
-        onDelete(id);
-      } else {
+      const response = await fetch(
+        `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
         alert("Delete failed: " + data.message);
+        return;
       }
+
+      // If success, inform parent to remove message from list
+      onDelete(id);
     } catch (error) {
       console.error(error);
+      alert("Delete request failed");
     }
   };
 
+  // ** Minimal patch (update) handler **
   const handleUpdate = async (newMessage) => {
     try {
-      const response = await fetch(`https://your-backend-url/thoughts/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newMessage }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        onUpdate(id, newMessage);
-      } else {
+      const response = await fetch(
+        `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: newMessage }), // Use key your backend expects
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
         alert("Update failed: " + data.message);
+        return;
       }
+
+      // If success, inform parent to update message content
+      onUpdate(id, newMessage);
     } catch (error) {
       console.error(error);
+      alert("Update request failed");
     }
   };
+
+  // Your existing calculateTime function...
 
   const calculateTime = (time) => {
     let timeDiff = Math.floor((Date.now() - new Date(time)) / 1000);
@@ -122,7 +140,8 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         </div>
         <p className="text-sm text-gray-500 font-sans">{calculateTime(time)}</p>
       </div>
-      {/* Example delete & update buttons for testing (you can style/remove later) */}
+
+      {/* Delete & Edit buttons */}
       <div className="flex gap-4 mt-2">
         <button
           onClick={handleDelete}
