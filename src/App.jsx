@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from "react";
+
 import Form from "./components/Form";
 import LikedMessages from "./components/LikedMessages";
 import Messages from "./components/Messages";
-import React, { useEffect, useState } from "react";
 
 export const App = () => {
   const [messages, setMessages] = useState([]);
@@ -10,7 +11,7 @@ export const App = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          "https://happy-thoughts-api-4ful.onrender.com/thoughts"
+          "https://api-project-ns11.onrender.com/thoughts"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch messages");

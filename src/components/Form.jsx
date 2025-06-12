@@ -22,7 +22,7 @@ const Form = ({ setMessages }) => {
 
     try {
       const response = await fetch(
-        "https://happy-thoughts-api-4ful.onrender.com/thoughts",
+        "https://api-project-ns11.onrender.com/thoughts",
         {
           method: "POST",
           headers: {

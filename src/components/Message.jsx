@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
-  const thoughtIdUrl = `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}/like`;
+  const thoughtIdUrl = `https://api-project-ns11.onrender.com/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
@@ -54,7 +54,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}`,
+        `https://api-project-ns11.onrender.com/thoughts/${id}`,
         {
           method: "DELETE",
         }
@@ -74,11 +74,11 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
     }
   };
 
-  // ** Minimal patch (update) handler **
+  // Update message
   const handleUpdate = async (newMessage) => {
     try {
       const response = await fetch(
-        `https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}`,
+        `https://api-project-ns11.onrender.com/thoughts/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
