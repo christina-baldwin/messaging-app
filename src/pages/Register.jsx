@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-md">
-        <h2 className="mb-6 text-center text-3xl font-bold text-pink-600">
+    <div className="flex items-center justify-center py-10 px-4">
+      <div className="w-full max-w-[500px] rounded-md bg-white p-8 shadow-md">
+        <h2 className="mb-6 text-center font-sans text-4xl font-bold text-pink-500">
           Create an Account
         </h2>
         <form className="space-y-5">
@@ -52,13 +52,13 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="w-full rounded-md bg-pink-500 px-4 py-2 text-white hover:bg-pink-600 transition-colors"
+            className="w-full rounded-full bg-pink-300 px-4 py-3 text-lg font-semibold text-white hover:bg-pink-400 transition cursor-pointer"
           >
             Register
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-lg text-gray-700">
           Already have an account?{" "}
           <Link to="/login" className="text-pink-500 hover:underline">
             Log in
