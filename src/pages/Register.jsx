@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 const Register = () => {
   return (
     <div className="flex items-center justify-center py-10 px-4">
-      <div className="w-full max-w-[500px] rounded-md bg-white p-8 shadow-md">
+      <div className="w-full max-w-[500px] rounded-md bg-white p-8">
         <h2 className="mb-6 text-center font-sans text-4xl font-bold text-pink-500">
           Create an Account
         </h2>
-        <form className="space-y-5">
+        <form className="flex flex-col justify-between gap-4 border border-black bg-[#f5f5f5] p-4 shadow-[4px_4px_0px_#000] mb-12">
           <div>
             <label
               htmlFor="username"
@@ -52,7 +52,7 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="w-full rounded-full bg-pink-300 px-4 py-3 text-lg font-semibold text-white hover:bg-pink-400 transition cursor-pointer"
+            className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer"
           >
             Register
           </button>

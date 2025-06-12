@@ -9,11 +9,11 @@ const Landing = () => {
           Welcome to the Happy Thoughts app! Where you can post your own happy
           thoughts and view those of others. Login or register to get started!
         </p>
-        <div className="flex gap-4 mt-2">
-          <button className="flex-1 rounded-full bg-pink-300 p-3 text-lg font-semibold text-white hover:bg-pink-400 transition cursor-pointer">
+        <div className="flex justify-center  gap-4 mt-2">
+          <button className=" ap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-lg cursor-pointer">
             Login
           </button>
-          <button className="flex-1 rounded-full bg-pink-300 p-3 text-lg font-semibold text-white hover:bg-pink-400 transition cursor-pointer">
+          <button className="gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-lg cursor-pointer">
             Register
           </button>
         </div>
