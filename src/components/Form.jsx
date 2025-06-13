@@ -73,7 +73,7 @@ const Form = ({ setMessages }) => {
       )}
       <button
         type="submit"
-        className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer"
+        className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer  hover:bg-pink-300 transition"
       >
         <ion-icon name="heart"></ion-icon>
         Send Happy Thought
