@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Form from "../components/Form";
 import LikedMessages from "../components/LikedMessages";
@@ -6,8 +7,14 @@ import Messages from "../components/Messages";
 
 const Main = () => {
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     const fetchMessages = async () => {
       try {
         const response = await fetch(
@@ -27,7 +34,7 @@ const Main = () => {
     };
 
     fetchMessages();
-  }, []);
+  }, [navigate]);
 
   const handleDelete = async (thoughtId) => {
     try {
@@ -88,9 +95,20 @@ const Main = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-[500px] w-full">
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 rounded bg-pink-300 text-white font-bold hover:bg-pink-400 cursor-pointer mb-8"
+        >
+          Log Out
+        </button>
         <h1 className="text-center font-sans mb-10 text-4xl text-pink-500">
           Happy Thoughts!
         </h1>
