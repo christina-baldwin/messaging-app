@@ -21,12 +21,15 @@ const Form = ({ setMessages }) => {
     setErrorMessage("");
 
     try {
+      const token = localStorage.getItem("token"); // or wherever you store the JWT
+
       const response = await fetch(
         "https://api-project-ns11.onrender.com/thoughts",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // include token here
           },
           body: JSON.stringify(newMessage),
         }
@@ -39,7 +42,7 @@ const Form = ({ setMessages }) => {
       const data = await response.json();
       console.log("Message posted:", data);
 
-      setMessages((prev) => [data, ...prev]);
+      setMessages((prev) => [data.response, ...prev]);
 
       setMessage("");
     } catch (error) {

@@ -1,23 +1,8 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 import Message from "./Message";
 
-const Messages = ({ messages: initialMessages }) => {
-  const [messages, setMessages] = useState(initialMessages);
-
-  const handleDelete = (thoughtId) => {
-    setMessages(messages.filter((msg) => msg._id !== thoughtId));
-  };
-
-  const handleUpdate = (thoughtId, newMessage) => {
-    setMessages(
-      messages.map((msg) =>
-        msg._id === thoughtId ? { ...msg, message: newMessage } : msg
-      )
-    );
-  };
-
+const Messages = ({ messages, onDelete, onUpdate }) => {
   return (
     <div className="flex flex-col gap-12 mb-12">
       <h2 className="font-sans mb-6 text-2xl text-pink-500">Latest Messages</h2>
@@ -33,8 +18,8 @@ const Messages = ({ messages: initialMessages }) => {
             message={message.message}
             time={message.createdAt}
             likes={message.hearts}
-            onDelete={handleDelete}
-            onUpdate={handleUpdate}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
           />
         </motion.div>
       ))}
