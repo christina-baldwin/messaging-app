@@ -16,9 +16,16 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
 
   const handleLike = async () => {
     try {
+      const token = localStorage.getItem("token"); // get your token
+
       let response;
       if (liked) {
-        response = await fetch(thoughtIdUrl, { method: "DELETE" });
+        response = await fetch(thoughtIdUrl, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!response.ok) throw new Error("Failed to unlike");
 
         const likedMessages =
@@ -34,7 +41,12 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         setLiked(false);
         setLikeCount((count) => count - 1);
       } else {
-        response = await fetch(thoughtIdUrl, { method: "POST" });
+        response = await fetch(thoughtIdUrl, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!response.ok) throw new Error("Failed to like");
 
         const likedMessages =
@@ -50,7 +62,6 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
     }
   };
 
-  // ** Minimal delete handler **
   const handleDelete = async () => {
     try {
       const response = await fetch(
