@@ -38,7 +38,7 @@ const Main = () => {
 
   const handleDelete = async (thoughtId) => {
     try {
-      const token = localStorage.getItem("token"); // if your API needs auth
+      const token = localStorage.getItem("token");
 
       const response = await fetch(
         `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
@@ -54,7 +54,6 @@ const Main = () => {
         throw new Error("Failed to delete message");
       }
 
-      // Update local state by removing deleted message
       setMessages((prev) => prev.filter((msg) => msg._id !== thoughtId));
     } catch (error) {
       console.error("Error deleting message:", error);
@@ -63,7 +62,7 @@ const Main = () => {
 
   const handleUpdate = async (thoughtId, newMessage) => {
     try {
-      const token = localStorage.getItem("token"); // if your API needs auth
+      const token = localStorage.getItem("token");
 
       const response = await fetch(
         `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
