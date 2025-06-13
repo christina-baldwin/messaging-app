@@ -144,7 +144,8 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
       <div className="flex gap-4 mt-2">
         <button
           onClick={handleDelete}
-          className={`flex items-center justify-center rounded-full border-none p-2 text-lg cursor-pointer bg-pink-300`}
+          className={`self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer  hover:bg-pink-300 transition
+`}
         >
           Delete
         </button>
@@ -155,7 +156,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
               handleUpdate(newMessage);
             }
           }}
-          className={`flex items-center justify-center rounded-full border-none p-2 text-lg cursor-pointer bg-pink-300`}
+          className={`self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer  hover:bg-pink-300 transition`}
         >
           Edit
         </button>
