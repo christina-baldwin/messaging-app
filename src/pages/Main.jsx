@@ -105,7 +105,7 @@ const Main = () => {
       <div className="max-w-[500px] w-full">
         <button
           onClick={handleLogout}
-          className="px-4 py-2 rounded bg-pink-300 text-white font-bold hover:bg-pink-400 cursor-pointer mb-8"
+          className="px-4 py-2 rounded-[15px] bg-pink-300 text-white font-bold hover:bg-pink-400 cursor-pointer mb-8"
         >
           Log Out
         </button>
