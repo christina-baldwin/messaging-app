@@ -5,10 +5,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch(
@@ -31,6 +33,8 @@ const Login = () => {
       navigate("/app");
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,10 +95,11 @@ const Login = () => {
         </p>
         <Link
           to="/"
-          className="mt-6 text-pink-400 hover:text-pink-600 underline transition"
+          className="mt-6 text-pink-400 hover:text-pink-600 underline transition mb-8"
         >
           ← Back to Home
         </Link>
+        {isLoading && <p>Logging in...</p>}
       </div>
     </div>
   );
