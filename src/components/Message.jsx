@@ -16,13 +16,14 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
 
   const handleLike = async () => {
     try {
-      const token = localStorage.getItem("token"); // get your token
+      const token = localStorage.getItem("token");
 
       let response;
       if (liked) {
         response = await fetch(thoughtIdUrl, {
           method: "DELETE",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -44,6 +45,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         response = await fetch(thoughtIdUrl, {
           method: "POST",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -77,7 +79,6 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         return;
       }
 
-      // If success, inform parent to remove message from list
       onDelete(id);
     } catch (error) {
       console.error(error);
@@ -85,7 +86,6 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
     }
   };
 
-  // Update message
   const handleUpdate = async (newMessage) => {
     try {
       const response = await fetch(
@@ -93,7 +93,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: newMessage }), // Use key your backend expects
+          body: JSON.stringify({ message: newMessage }),
         }
       );
 
@@ -103,15 +103,12 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         return;
       }
 
-      // If success, inform parent to update message content
       onUpdate(id, newMessage);
     } catch (error) {
       console.error(error);
       alert("Update request failed");
     }
   };
-
-  // Your existing calculateTime function...
 
   const calculateTime = (time) => {
     let timeDiff = Math.floor((Date.now() - new Date(time)) / 1000);
