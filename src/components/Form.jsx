@@ -21,12 +21,15 @@ const Form = ({ setMessages }) => {
     setErrorMessage("");
 
     try {
+      const token = localStorage.getItem("token"); // or wherever you store the JWT
+
       const response = await fetch(
-        "https://happy-thoughts-api-4ful.onrender.com/thoughts",
+        "https://api-project-ns11.onrender.com/thoughts",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // include token here
           },
           body: JSON.stringify(newMessage),
         }
@@ -39,7 +42,7 @@ const Form = ({ setMessages }) => {
       const data = await response.json();
       console.log("Message posted:", data);
 
-      setMessages((prev) => [data, ...prev]);
+      setMessages((prev) => [data.response, ...prev]);
 
       setMessage("");
     } catch (error) {
@@ -73,7 +76,7 @@ const Form = ({ setMessages }) => {
       )}
       <button
         type="submit"
-        className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer"
+        className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer  hover:bg-pink-300 transition"
       >
         <ion-icon name="heart"></ion-icon>
         Send Happy Thought

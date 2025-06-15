@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import Message from "./Message";
 
 const LikedMessages = (props) => {
@@ -8,16 +9,12 @@ const LikedMessages = (props) => {
     return JSON.parse(localStorage.getItem("likedMessages")) || [];
   };
 
-  const filterLikedMessages = () => {
+  useEffect(() => {
     const likedMessageIds = getLikedMessageIds();
     const likedMessages = props.messages.filter((message) =>
       likedMessageIds.includes(message._id)
     );
     setLikedMessages(likedMessages);
-  };
-
-  useEffect(() => {
-    filterLikedMessages();
   }, [props.messages]);
 
   return (
@@ -36,6 +33,7 @@ const LikedMessages = (props) => {
           {likedMessages.length > 0 ? (
             likedMessages.map((message) => (
               <Message
+                key={message._id}
                 id={message._id}
                 message={message.message}
                 time={message.createdAt}
