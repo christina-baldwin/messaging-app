@@ -10,8 +10,8 @@ const getUserFromToken = () => {
     const base64Payload = token.split(".")[1];
     const payload = JSON.parse(atob(base64Payload));
     return payload.email || payload.id || null;
-  } catch (err) {
-    console.error("Invalid token", err);
+  } catch (error) {
+    console.error("Invalid token", error);
     return null;
   }
 };
