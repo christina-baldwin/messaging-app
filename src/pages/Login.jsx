@@ -99,7 +99,7 @@ const Login = () => {
         >
           ← Back to Home
         </Link>
-        {isLoading && <p>Logging in...</p>}
+        {isLoading && <p className="text-center p-6">Logging in...</p>}
       </div>
     </div>
   );

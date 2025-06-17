@@ -2,17 +2,29 @@ import { useEffect, useState } from "react";
 
 import Message from "./Message";
 
+const getUserFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const base64Payload = token.split(".")[1];
+    const payload = JSON.parse(atob(base64Payload));
+    return payload.email || payload.id || null;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};
+
 const LikedMessages = (props) => {
   const [likedMessages, setLikedMessages] = useState([]);
 
-  const getLikedMessageIds = () => {
-    return JSON.parse(localStorage.getItem("likedMessages")) || [];
-  };
-
   useEffect(() => {
-    const likedMessageIds = getLikedMessageIds();
+    const currentUser = getUserFromToken();
+    if (!currentUser) return;
+
     const likedMessages = props.messages.filter((message) =>
-      likedMessageIds.includes(message._id)
+      message.likedBy?.includes(currentUser)
     );
     setLikedMessages(likedMessages);
   }, [props.messages]);
