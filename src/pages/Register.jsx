@@ -10,12 +10,10 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Trim input to remove accidental spaces
     const trimmedUsername = username.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
-    // Validate username
     const usernameRegex = /^[A-Za-z]+$/; // only letters
     if (!trimmedUsername) {
       setError("Username is required.");
@@ -30,7 +28,6 @@ const Register = () => {
       return;
     }
 
-    // Validate email
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!trimmedEmail) {
       setError("Email is required.");
@@ -41,7 +38,6 @@ const Register = () => {
       return;
     }
 
-    // Validate password
     if (!trimmedPassword) {
       setError("Password is required.");
       return;
