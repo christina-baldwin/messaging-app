@@ -64,36 +64,30 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+  const handleDelete = () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this message?"
+    );
+    if (!confirmDelete) return;
 
-      if (!response.ok) {
-        const data = await response.json();
-        alert("Delete failed: " + data.message);
-        return;
-      }
-
-      onDelete(id);
-    } catch (error) {
-      console.error(error);
-      alert("Delete request failed");
-    }
+    onDelete(id);
   };
 
   const handleUpdate = async (newMessage) => {
+    if (!newMessage || newMessage.trim() === "") return;
+
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(
         `https://api-project-ns11.onrender.com/thoughts/${id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: newMessage }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ newMessage }),
         }
       );
 
@@ -160,6 +154,8 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         <button
           onClick={() => {
             const newMessage = prompt("Enter new message:", message);
+            console.log("Updating message to:", newMessage);
+
             if (newMessage && newMessage.trim() !== "") {
               handleUpdate(newMessage);
             }

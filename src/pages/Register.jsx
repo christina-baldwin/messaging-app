@@ -14,7 +14,7 @@ const Register = () => {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
-    const usernameRegex = /^[A-Za-z]+$/; // only letters
+    const usernameRegex = /^[A-Za-z]+$/;
     if (!trimmedUsername) {
       setError("Username is required.");
       return;

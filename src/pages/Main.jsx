@@ -15,6 +15,7 @@ const Main = () => {
       navigate("/login");
       return;
     }
+
     const fetchMessages = async () => {
       try {
         const response = await fetch(
@@ -51,12 +52,21 @@ const Main = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to delete message");
+        let errorMessage = "Failed to delete message";
+        try {
+          const data = await response.json();
+          if (data?.message) errorMessage = data.message;
+        } catch (err) {
+          console.warn("No JSON returned from delete response:", err);
+        }
+        alert(errorMessage);
+        return;
       }
 
       setMessages((prev) => prev.filter((msg) => msg._id !== thoughtId));
     } catch (error) {
       console.error("Error deleting message:", error);
+      alert("Delete request failed");
     }
   };
 
@@ -66,6 +76,7 @@ const Main = () => {
 
       const response = await fetch(
         `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
+        // `http://localhost:8080/thoughts/${thoughtId}`,
         {
           method: "PATCH",
           headers: {
