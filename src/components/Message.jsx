@@ -14,7 +14,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         if (!token) return;
 
         const decoded = jwtDecode(token);
-        const userId = decoded.id; // ✅ use this in the fetch URL
+        const userId = decoded.id;
 
         const res = await fetch(
           `https://api-project-ns11.onrender.com/thoughts/liked/${userId}`,
@@ -55,7 +55,7 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
 
       const data = await response.json();
       setLiked(!liked);
-      setLikeCount(data.thought.hearts); // always get latest count from backend
+      setLikeCount(data.thought.hearts);
     } catch (error) {
       console.error("Error liking/unliking:", error.message);
     }
