@@ -1,7 +1,15 @@
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 
-const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
+const Message = ({
+  id,
+  message,
+  time,
+  likes,
+  onDelete,
+  onUpdate,
+  onUpdateLike,
+}) => {
   const thoughtIdUrl = `https://api-project-ns11.onrender.com/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
@@ -56,6 +64,9 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
       const data = await response.json();
       setLiked(!liked);
       setLikeCount(data.thought.hearts);
+
+      // Notify parent to update messages state
+      onUpdateLike(id, data.thought.likedBy, data.thought.hearts);
     } catch (error) {
       console.error("Error liking/unliking:", error.message);
     }

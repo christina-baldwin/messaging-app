@@ -16,18 +16,18 @@ const getUserFromToken = () => {
   }
 };
 
-const LikedMessages = (props) => {
+const LikedMessages = ({ messages, onUpdateLike }) => {
   const [likedMessages, setLikedMessages] = useState([]);
 
   useEffect(() => {
     const currentUser = getUserFromToken();
     if (!currentUser) return;
 
-    const likedMessages = props.messages.filter((message) =>
+    const likedMessages = messages.filter((message) =>
       message.likedBy?.includes(currentUser)
     );
     setLikedMessages(likedMessages);
-  }, [props.messages]);
+  }, [messages]);
 
   return (
     <div className="mb-20">
@@ -50,6 +50,7 @@ const LikedMessages = (props) => {
                 message={message.message}
                 time={message.createdAt}
                 likes={message.hearts}
+                onUpdateLike={onUpdateLike}
               />
             ))
           ) : (

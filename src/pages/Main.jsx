@@ -110,6 +110,16 @@ const Main = () => {
     navigate("/");
   };
 
+  const handleUpdateLike = (thoughtId, newLikedBy, newHearts) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg._id === thoughtId
+          ? { ...msg, likedBy: newLikedBy, hearts: newHearts }
+          : msg
+      )
+    );
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-[500px] w-full">
@@ -128,9 +138,10 @@ const Main = () => {
           messages={messages}
           onDelete={handleDelete}
           onUpdate={handleUpdate}
+          onUpdateLike={handleUpdateLike}
         />
 
-        <LikedMessages messages={messages} />
+        <LikedMessages messages={messages} onUpdateLike={handleUpdateLike} />
       </div>
     </div>
   );
