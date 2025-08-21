@@ -10,18 +10,64 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // Trim input to remove accidental spaces
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    // Validate username
+    const usernameRegex = /^[A-Za-z]+$/; // only letters
+    if (!trimmedUsername) {
+      setError("Username is required.");
+      return;
+    }
+    if (!usernameRegex.test(trimmedUsername)) {
+      setError("Username can only contain letters.");
+      return;
+    }
+    if (trimmedUsername.length < 3) {
+      setError("Username must be at least 3 characters long.");
+      return;
+    }
+
+    // Validate email
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!trimmedEmail) {
+      setError("Email is required.");
+      return;
+    }
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Validate password
+    if (!trimmedPassword) {
+      setError("Password is required.");
+      return;
+    }
+    if (trimmedPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
       const response = await fetch(
         "https://api-project-ns11.onrender.com/auth/signup",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password }),
+          body: JSON.stringify({
+            username: trimmedUsername,
+            email: trimmedEmail,
+            password: trimmedPassword,
+          }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("Registration failed");
+        const data = await response.json();
+        throw new Error(data.message || "Registration failed");
       }
 
       alert("Registration successful!");
