@@ -7,58 +7,6 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
 
-  // const handleLike = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     console.log("Token:", token);
-
-  //     let response;
-
-  //     if (liked) {
-  //       response = await fetch(thoughtIdUrl, {
-  //         method: "DELETE",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (!response.ok) throw new Error("Failed to unlike");
-
-  //       const likedMessages =
-  //         JSON.parse(localStorage.getItem("likedMessages")) || [];
-  //       const updatedLikedMessages = likedMessages.filter(
-  //         (currentId) => currentId !== id
-  //       );
-  //       localStorage.setItem(
-  //         "likedMessages",
-  //         JSON.stringify(updatedLikedMessages)
-  //       );
-
-  //       setLiked(false);
-  //       setLikeCount((count) => count - 1);
-  //     } else {
-  //       response = await fetch(thoughtIdUrl, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (!response.ok) throw new Error("Failed to like");
-
-  //       const likedMessages =
-  //         JSON.parse(localStorage.getItem("likedMessages")) || [];
-  //       likedMessages.push(id);
-  //       localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
-
-  //       setLiked(true);
-  //       setLikeCount((count) => count + 1);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   useEffect(() => {
     const fetchLikedStatus = async () => {
       try {
