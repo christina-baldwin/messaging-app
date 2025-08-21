@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 
 const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
   const thoughtIdUrl = `https://api-project-ns11.onrender.com/thoughts/${id}/like`;
@@ -6,61 +7,109 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
 
+  // const handleLike = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     console.log("Token:", token);
+
+  //     let response;
+
+  //     if (liked) {
+  //       response = await fetch(thoughtIdUrl, {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       if (!response.ok) throw new Error("Failed to unlike");
+
+  //       const likedMessages =
+  //         JSON.parse(localStorage.getItem("likedMessages")) || [];
+  //       const updatedLikedMessages = likedMessages.filter(
+  //         (currentId) => currentId !== id
+  //       );
+  //       localStorage.setItem(
+  //         "likedMessages",
+  //         JSON.stringify(updatedLikedMessages)
+  //       );
+
+  //       setLiked(false);
+  //       setLikeCount((count) => count - 1);
+  //     } else {
+  //       response = await fetch(thoughtIdUrl, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       if (!response.ok) throw new Error("Failed to like");
+
+  //       const likedMessages =
+  //         JSON.parse(localStorage.getItem("likedMessages")) || [];
+  //       likedMessages.push(id);
+  //       localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
+
+  //       setLiked(true);
+  //       setLikeCount((count) => count + 1);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   useEffect(() => {
-    const likedMessages =
-      JSON.parse(localStorage.getItem("likedMessages")) || [];
-    if (likedMessages.includes(id)) {
-      setLiked(true);
-    }
+    const fetchLikedStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const decoded = jwtDecode(token);
+        const userId = decoded.id; // ✅ use this in the fetch URL
+
+        const res = await fetch(
+          `https://api-project-ns11.onrender.com/thoughts/liked/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch liked thoughts");
+        const data = await res.json();
+
+        const likedIds = data.response.map((t) => t._id);
+        setLiked(likedIds.includes(id)); // true if this thought is liked
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchLikedStatus();
   }, [id]);
 
   const handleLike = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      let response;
-      if (liked) {
-        response = await fetch(thoughtIdUrl, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to unlike");
+      const response = await fetch(thoughtIdUrl, {
+        method: liked ? "DELETE" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const likedMessages =
-          JSON.parse(localStorage.getItem("likedMessages")) || [];
-        const updatedLikedMessages = likedMessages.filter(
-          (currentId) => currentId !== id
-        );
-        localStorage.setItem(
-          "likedMessages",
-          JSON.stringify(updatedLikedMessages)
-        );
-
-        setLiked(false);
-        setLikeCount((count) => count - 1);
-      } else {
-        response = await fetch(thoughtIdUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to like");
-
-        const likedMessages =
-          JSON.parse(localStorage.getItem("likedMessages")) || [];
-        likedMessages.push(id);
-        localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
-
-        setLiked(true);
-        setLikeCount((count) => count + 1);
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || "Failed to like/unlike");
       }
+
+      const data = await response.json();
+      setLiked(!liked);
+      setLikeCount(data.thought.hearts); // always get latest count from backend
     } catch (error) {
-      console.error(error);
+      console.error("Error liking/unliking:", error.message);
     }
   };
 
