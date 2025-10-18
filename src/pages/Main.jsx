@@ -74,6 +74,8 @@ const Main = () => {
     try {
       const token = localStorage.getItem("token");
 
+      console.log("Token before PATCH:", token);
+
       const response = await fetch(`${url}/thoughts/${thoughtId}`, {
         method: "PATCH",
         headers: {
