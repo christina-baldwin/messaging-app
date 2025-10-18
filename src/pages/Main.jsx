@@ -49,6 +49,7 @@ const Main = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -83,6 +84,7 @@ const Main = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ message: newMessage }),
+        credentials: "include",
       });
 
       if (!response.ok) {
