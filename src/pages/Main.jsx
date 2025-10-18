@@ -5,6 +5,9 @@ import Form from "../components/Form";
 import LikedMessages from "../components/LikedMessages";
 import Messages from "../components/Messages";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Main = () => {
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
@@ -15,11 +18,12 @@ const Main = () => {
       navigate("/login");
       return;
     }
+
+    console.log("Hello from the useEffect:", token);
+
     const fetchMessages = async () => {
       try {
-        const response = await fetch(
-          "https://api-project-ns11.onrender.com/thoughts"
-        );
+        const response = await fetch(`${url}/thoughts`);
         if (!response.ok) {
           throw new Error("Failed to fetch messages");
         }
@@ -40,41 +44,49 @@ const Main = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log("Token before DELETE:", token);
+
+      const response = await fetch(`${url}/thoughts/${thoughtId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to delete message");
+        let errorMessage = "Failed to delete message";
+        try {
+          const data = await response.json();
+          if (data?.message) errorMessage = data.message;
+        } catch (err) {
+          console.warn("No JSON returned from delete response:", err);
+        }
+        alert(errorMessage);
+        return;
       }
 
       setMessages((prev) => prev.filter((msg) => msg._id !== thoughtId));
     } catch (error) {
       console.error("Error deleting message:", error);
+      alert("Delete request failed");
     }
   };
 
   const handleUpdate = async (thoughtId, newMessage) => {
-    try {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    console.log("Token before PATCH:", token);
 
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ message: newMessage }),
-        }
-      );
+    try {
+      const response = await fetch(`${url}/thoughts/${thoughtId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ message: newMessage }),
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to update message");
@@ -99,6 +111,16 @@ const Main = () => {
     navigate("/");
   };
 
+  const handleUpdateLike = (thoughtId, newLikedBy, newHearts) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg._id === thoughtId
+          ? { ...msg, likedBy: newLikedBy, hearts: newHearts }
+          : msg
+      )
+    );
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-[500px] w-full">
@@ -117,9 +139,10 @@ const Main = () => {
           messages={messages}
           onDelete={handleDelete}
           onUpdate={handleUpdate}
+          onUpdateLike={handleUpdateLike}
         />
 
-        <LikedMessages messages={messages} />
+        <LikedMessages messages={messages} onUpdateLike={handleUpdateLike} />
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,17 +13,36 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!trimmedEmail) {
+      setError("Email is required.");
+      return;
+    }
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!trimmedPassword) {
+      setError("Password is required.");
+      return;
+    }
+
+    setError("");
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "https://api-project-ns11.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${url}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmedEmail,
+          password: trimmedPassword,
+        }),
+      });
 
       const data = await response.json();
 
@@ -29,7 +51,6 @@ const Login = () => {
       }
 
       localStorage.setItem("token", data.token);
-
       navigate("/app");
     } catch (error) {
       setError(error.message);
@@ -40,7 +61,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center py-10 px-4">
-      <div className="w-full max-w-[500px] rounded-md bg-white p-8 ">
+      <div className="w-full max-w-[500px] rounded-md bg-white p-8">
         <h2 className="mb-6 text-center font-sans text-4xl font-bold text-pink-500">
           Log in
         </h2>
@@ -60,6 +81,7 @@ const Login = () => {
               id="email"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-1 focus:ring-pink-500"
               placeholder="you@example.com"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -75,12 +97,13 @@ const Login = () => {
               id="password"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-1 focus:ring-pink-500"
               placeholder="••••••••"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button
             type="submit"
-            className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer  hover:bg-pink-300 transition"
+            className="self-start flex items-center justify-center gap-1 px-3 py-2 border-none rounded-[15px] bg-pink-200 font-bold text-sm cursor-pointer hover:bg-pink-300 transition"
           >
             Log In
           </button>

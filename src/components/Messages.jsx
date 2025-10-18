@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import Message from "./Message";
 
-const Messages = ({ messages, onDelete, onUpdate }) => {
+const Messages = ({ messages, onDelete, onUpdate, onUpdateLike }) => {
   return (
     <div className="flex flex-col gap-12 mb-12">
       <h2 className="font-sans mb-6 text-2xl text-pink-500">Latest Messages</h2>
@@ -20,6 +20,7 @@ const Messages = ({ messages, onDelete, onUpdate }) => {
             likes={message.hearts}
             onDelete={onDelete}
             onUpdate={onUpdate}
+            onUpdateLike={onUpdateLike}
           />
         </motion.div>
       ))}

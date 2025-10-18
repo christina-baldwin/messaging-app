@@ -1,101 +1,100 @@
-import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 
-const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
-  const thoughtIdUrl = `https://api-project-ns11.onrender.com/thoughts/${id}/like`;
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
+const Message = ({
+  id,
+  message,
+  time,
+  likes,
+  onDelete,
+  onUpdate,
+  onUpdateLike,
+}) => {
+  const thoughtIdUrl = `${url}/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
 
   useEffect(() => {
-    const likedMessages =
-      JSON.parse(localStorage.getItem("likedMessages")) || [];
-    if (likedMessages.includes(id)) {
-      setLiked(true);
-    }
+    const fetchLikedStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const decoded = jwtDecode(token);
+        const userId = decoded.id;
+
+        const res = await fetch(`${url}/thoughts/liked/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch liked thoughts");
+        const data = await res.json();
+
+        const likedIds = data.response.map((t) => t._id);
+        setLiked(likedIds.includes(id)); // true if this thought is liked
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchLikedStatus();
   }, [id]);
 
   const handleLike = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      let response;
-      if (liked) {
-        response = await fetch(thoughtIdUrl, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to unlike");
+      const response = await fetch(thoughtIdUrl, {
+        method: liked ? "DELETE" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const likedMessages =
-          JSON.parse(localStorage.getItem("likedMessages")) || [];
-        const updatedLikedMessages = likedMessages.filter(
-          (currentId) => currentId !== id
-        );
-        localStorage.setItem(
-          "likedMessages",
-          JSON.stringify(updatedLikedMessages)
-        );
-
-        setLiked(false);
-        setLikeCount((count) => count - 1);
-      } else {
-        response = await fetch(thoughtIdUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to like");
-
-        const likedMessages =
-          JSON.parse(localStorage.getItem("likedMessages")) || [];
-        likedMessages.push(id);
-        localStorage.setItem("likedMessages", JSON.stringify(likedMessages));
-
-        setLiked(true);
-        setLikeCount((count) => count + 1);
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || "Failed to like/unlike");
       }
+
+      const data = await response.json();
+      setLiked(!liked);
+      setLikeCount(data.thought.hearts);
+
+      // Notify parent to update messages state
+      onUpdateLike(id, data.thought.likedBy, data.thought.hearts);
     } catch (error) {
-      console.error(error);
+      console.error("Error liking/unliking:", error.message);
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+  const handleDelete = () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this message?"
+    );
+    if (!confirmDelete) return;
 
-      if (!response.ok) {
-        const data = await response.json();
-        alert("Delete failed: " + data.message);
-        return;
-      }
-
-      onDelete(id);
-    } catch (error) {
-      console.error(error);
-      alert("Delete request failed");
-    }
+    onDelete(id);
   };
 
   const handleUpdate = async (newMessage) => {
+    if (!newMessage || newMessage.trim() === "") return;
+
     try {
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: newMessage }),
-        }
-      );
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`${url}/thoughts/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ newMessage }),
+      });
 
       if (!response.ok) {
         const data = await response.json();
@@ -160,6 +159,8 @@ const Message = ({ id, message, time, likes, onDelete, onUpdate }) => {
         <button
           onClick={() => {
             const newMessage = prompt("Enter new message:", message);
+            console.log("Updating message to:", newMessage);
+
             if (newMessage && newMessage.trim() !== "") {
               handleUpdate(newMessage);
             }

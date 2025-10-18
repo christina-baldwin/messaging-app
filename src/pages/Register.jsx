@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -7,21 +10,62 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    const usernameRegex = /^[A-Za-z]+$/;
+    if (!trimmedUsername) {
+      setError("Username is required.");
+      return;
+    }
+    if (!usernameRegex.test(trimmedUsername)) {
+      setError("Username can only contain letters.");
+      return;
+    }
+    if (trimmedUsername.length < 3) {
+      setError("Username must be at least 3 characters long.");
+      return;
+    }
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!trimmedEmail) {
+      setError("Email is required.");
+      return;
+    }
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!trimmedPassword) {
+      setError("Password is required.");
+      return;
+    }
+    if (trimmedPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
-      const response = await fetch(
-        "https://api-project-ns11.onrender.com/auth/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password }),
-        }
-      );
+      const response = await fetch(`${url}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password: trimmedPassword,
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error("Registration failed");
+        const data = await response.json();
+        throw new Error(data.message || "Registration failed");
       }
 
       alert("Registration successful!");
@@ -29,6 +73,8 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setError("");
+
+      navigate("/login");
     } catch (error) {
       setError(error.message);
     }
