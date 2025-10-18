@@ -1,6 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Message = ({
   id,
   message,
@@ -10,7 +13,7 @@ const Message = ({
   onUpdate,
   onUpdateLike,
 }) => {
-  const thoughtIdUrl = `https://api-project-ns11.onrender.com/thoughts/${id}/like`;
+  const thoughtIdUrl = `${url}/thoughts/${id}/like`;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
@@ -24,12 +27,9 @@ const Message = ({
         const decoded = jwtDecode(token);
         const userId = decoded.id;
 
-        const res = await fetch(
-          `https://api-project-ns11.onrender.com/thoughts/liked/${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${url}/thoughts/liked/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!res.ok) throw new Error("Failed to fetch liked thoughts");
         const data = await res.json();
@@ -87,17 +87,14 @@ const Message = ({
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ newMessage }),
-        }
-      );
+      const response = await fetch(`${url}/thoughts/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ newMessage }),
+      });
 
       if (!response.ok) {
         const data = await response.json();

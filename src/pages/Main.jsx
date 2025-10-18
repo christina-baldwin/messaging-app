@@ -5,6 +5,9 @@ import Form from "../components/Form";
 import LikedMessages from "../components/LikedMessages";
 import Messages from "../components/Messages";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Main = () => {
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
@@ -18,9 +21,7 @@ const Main = () => {
 
     const fetchMessages = async () => {
       try {
-        const response = await fetch(
-          "https://api-project-ns11.onrender.com/thoughts"
-        );
+        const response = await fetch(`${url}/thoughts`);
         if (!response.ok) {
           throw new Error("Failed to fetch messages");
         }
@@ -41,15 +42,14 @@ const Main = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log("Token before DELETE:", token);
+
+      const response = await fetch(`${url}/thoughts/${thoughtId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         let errorMessage = "Failed to delete message";
@@ -74,18 +74,14 @@ const Main = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `https://api-project-ns11.onrender.com/thoughts/${thoughtId}`,
-        // `http://localhost:8080/thoughts/${thoughtId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ message: newMessage }),
-        }
-      );
+      const response = await fetch(`${url}/thoughts/${thoughtId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ message: newMessage }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to update message");

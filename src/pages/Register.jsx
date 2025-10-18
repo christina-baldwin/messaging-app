@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -50,18 +53,15 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://api-project-ns11.onrender.com/auth/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: trimmedUsername,
-            email: trimmedEmail,
-            password: trimmedPassword,
-          }),
-        }
-      );
+      const response = await fetch(`${url}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password: trimmedPassword,
+        }),
+      });
 
       if (!response.ok) {
         const data = await response.json();

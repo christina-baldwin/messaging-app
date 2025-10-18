@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+const url = "https://api-project-ns11.onrender.com";
+// const url = "http://localhost:8080";
+
 const Form = ({ setMessages }) => {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,17 +26,14 @@ const Form = ({ setMessages }) => {
     try {
       const token = localStorage.getItem("token"); // or wherever you store the JWT
 
-      const response = await fetch(
-        "https://api-project-ns11.onrender.com/thoughts",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // include token here
-          },
-          body: JSON.stringify(newMessage),
-        }
-      );
+      const response = await fetch(`${url}/thoughts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // include token here
+        },
+        body: JSON.stringify(newMessage),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to post message");
