@@ -19,6 +19,8 @@ const Main = () => {
       return;
     }
 
+    console.log("Hello from the useEffect:", token);
+
     const fetchMessages = async () => {
       try {
         const response = await fetch(`${url}/thoughts`);
@@ -72,11 +74,10 @@ const Main = () => {
   };
 
   const handleUpdate = async (thoughtId, newMessage) => {
+    const token = localStorage.getItem("token");
+    console.log("Token before PATCH:", token);
+
     try {
-      const token = localStorage.getItem("token");
-
-      console.log("Token before PATCH:", token);
-
       const response = await fetch(`${url}/thoughts/${thoughtId}`, {
         method: "PATCH",
         headers: {
